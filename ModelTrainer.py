@@ -152,64 +152,6 @@ class ModelTrainer:
 
         print(f"CRPS:{test_crps / test_num:.4f}")
 
-    '''
-    def plot_forecasting_results(self):
-        print('=' * 15)
-        print('Plotting a probabilistic forecasting result figure.')
-        self.model.load_state_dict(torch.load(self.args.wts_load_path))
-
-        self.model.eval()
-        with torch.no_grad():
-            for step, (_, b_y) in enumerate(self.test_loader):
-                b_y = b_y.to(self.device)
-                break
-        
-        #Probabilistic Forecasting
-        pred_seq_p = torch.zeros(self.args.prediction_length, 2000)
-        with torch.no_grad():
-            for i in range(2000):
-                xT_, _, _, _, _ = self.model(b_y) #xT_ [bs, H, seq_dim]
-                pred_seq_p[:, i] = xT_[-1, :, -1] #[:, i] [H]
-
-        print(pred_seq_p)
-
-        pred_seq_p_np = pred_seq_p.cpu().detach().numpy()
-        
-        time_steps = torch.arange(self.args.look_back_length, self.args.look_back_length + self.args.prediction_length).numpy()
-        
-        one_sample = pred_seq_p_np[:, 0]
-        
-        #print(time_steps.shape, one_sample.shape)
-        
-        lower_bound_60 = np.percentile(pred_seq_p_np, 20, axis=1)
-        upper_bound_60 = np.percentile(pred_seq_p_np, 80, axis=1)
-
-        lower_bound_80 = np.percentile(pred_seq_p_np, 10, axis=1)
-        upper_bound_80 = np.percentile(pred_seq_p_np, 90, axis=1)
-
-        lower_bound_98 = np.percentile(pred_seq_p_np, 1, axis=1)
-        upper_bound_98 = np.percentile(pred_seq_p_np, 99, axis=1)
-        
-        label_seq = b_y[-1, :, -1].cpu().numpy()
-        #print(label_seq.shape)
-        
-        #plt.figure(figsize=(10, 5))
-        plt.figure()
-        plt.plot(label_seq, label='Real sequence', color='blue', linewidth=0.2)
-        plt.plot(time_steps, one_sample, label='A sampled Forecasting', color='orange', linewidth=0.2)
-        plt.fill_between(time_steps, lower_bound_60, upper_bound_60, color='green', alpha=0.8, label='60% Confidence Interval')
-        plt.fill_between(time_steps, lower_bound_80, upper_bound_80, color='green', alpha=0.6, label='80% Confidence Interval')
-        plt.fill_between(time_steps, lower_bound_98, upper_bound_98, color='green', alpha=0.6, label='Confidence Interval')
-        
-        plt.title(f'Confidence Intervals of {self.args.data} dataset with {self.args.prediction_length} steps forecasting.')
-        #plt.xticks(np.arange(300, self.args.look_back_length + self.args.prediction_length, 10))
-        plt.xlabel('Time Steps')
-        plt.ylabel('Values')
-        plt.legend()
-        plt.grid()
-        plt.savefig(self.args.figure_save_path, dpi=300, bbox_inches='tight')
-        print('=' * 15)
-        '''
 
     def plot_forecasting_results(self):
         print('=' * 15)
@@ -336,57 +278,45 @@ class ModelTrainer:
 
 
 
-    def plot_heatmap(self):
-        print('=' * 15)
-        print('Plotting a probabilistic forecasting result figure.')
-        self.model.load_state_dict(torch.load(self.args.wts_load_path))
+    # def plot_heatmap(self):
+    #     print('=' * 15)
+    #     print('Plotting a probabilistic forecasting result figure.')
+    #     self.model.load_state_dict(torch.load(self.args.wts_load_path))
 
-        self.model.eval()
-        with torch.no_grad():
-            for step, (_, b_y) in enumerate(self.test_loader):
-                b_y = b_y.to(self.device)
-                break
+    #     self.model.eval()
+    #     with torch.no_grad():
+    #         for step, (_, b_y) in enumerate(self.test_loader):
+    #             b_y = b_y.to(self.device)
+    #             break
         
-        # decomp_module = series_decomp(kernel_size=25)
-        # res_init, trend_init = decomp_module(b_y.cpu())
+    #     # decomp_module = series_decomp(kernel_size=25)
+    #     # res_init, trend_init = decomp_module(b_y.cpu())
 
-        # res_T = res_init[-1, :, -1]
-        # res_c = torch.cat((res_T[:96], torch.zeros(48)), dim=0)
+    #     # res_T = res_init[-1, :, -1]
+    #     # res_c = torch.cat((res_T[:96], torch.zeros(48)), dim=0)
 
-        # plt.figure(figsize=(8, 2))
-        # plt.plot(torch.cat((torch.zeros(28), res_c), dim=0))
-        # plt.axis('off')
-        # plt.savefig("figure/res_c")
+    #     # plt.figure(figsize=(8, 2))
+    #     # plt.plot(torch.cat((torch.zeros(28), res_c), dim=0))
+    #     # plt.axis('off')
+    #     # plt.savefig("figure/res_c")
 
-        # plt.figure(figsize=(8, 2))
-        # plt.plot(torch.cat((torch.zeros(28), res_T), dim=0))
-        # plt.axis('off')
-        # plt.savefig("figure/res_t")
-        xT_P, xC_P, xT_P_flatten, hT, gT_, xT_, meanq, logvarq, meanp, logvarp = self.model(b_y)
+    #     # plt.figure(figsize=(8, 2))
+    #     # plt.plot(torch.cat((torch.zeros(28), res_T), dim=0))
+    #     # plt.axis('off')
+    #     # plt.savefig("figure/res_t")
+    #     xT_P, xC_P, xT_P_flatten, hT, gT_, xT_, meanq, logvarq, meanp, logvarp = self.model(b_y)
 
-        self.plot_heatmap_figure(xT_P[-1, : , :], 'figure/xT_P.png')
-        self.plot_heatmap_figure(xC_P[-1, : , :], 'figure/xC_P.png')
-        self.plot_heatmap_figure(xT_P_flatten[-1, : , :], 'figure/xT_P_flatten.png')
-        self.plot_heatmap_figure(meanq[-1, : , :], 'figure/meanq.png')
-        self.plot_heatmap_figure(logvarq[-1, : , :], 'figure/logvarq.png')
-        self.plot_heatmap_figure(meanp[-1, : , :], 'figure/meanp.png')
-        self.plot_heatmap_figure(logvarp[-1, : , :], 'figure/logvarp.png')
-        self.plot_heatmap_figure(logvarp[-1, : , :], 'figure/logvarp.png')
-        self.plot_heatmap_figure(hT[-1, : , :], 'figure/hT.png')
-        self.plot_heatmap_figure(gT_[-1, : , :], 'figure/gT_.png')
+    #     self.plot_heatmap_figure(xT_P[-1, : , :], 'figure/xT_P.png')
+    #     self.plot_heatmap_figure(xC_P[-1, : , :], 'figure/xC_P.png')
+    #     self.plot_heatmap_figure(xT_P_flatten[-1, : , :], 'figure/xT_P_flatten.png')
+    #     self.plot_heatmap_figure(meanq[-1, : , :], 'figure/meanq.png')
+    #     self.plot_heatmap_figure(logvarq[-1, : , :], 'figure/logvarq.png')
+    #     self.plot_heatmap_figure(meanp[-1, : , :], 'figure/meanp.png')
+    #     self.plot_heatmap_figure(logvarp[-1, : , :], 'figure/logvarp.png')
+    #     self.plot_heatmap_figure(logvarp[-1, : , :], 'figure/logvarp.png')
+    #     self.plot_heatmap_figure(hT[-1, : , :], 'figure/hT.png')
+    #     self.plot_heatmap_figure(gT_[-1, : , :], 'figure/gT_.png')
 
-
-    def plot_heatmap_figure(self, seq, save_path):
-        # seq [seq_len, seq_dim]
-        seq_np = seq.cpu().detach().numpy()
-
-        plt.figure(figsize=(10, 6))
-        plt.imshow(seq_np.T, aspect='auto', origin='lower', cmap='viridis')
-        plt.colorbar(label='Value')
-        plt.xlabel('seq_len')
-        plt.ylabel('seq_dim')
-        plt.title('Tensor Heatmap')
-        plt.savefig(save_path, dpi=300, bbox_inches='tight')
 
     # def plot_heatmap_figure(self, seq, save_path):
     #     # seq [seq_len, seq_dim]
@@ -395,13 +325,7 @@ class ModelTrainer:
     #     plt.figure(figsize=(10, 6))
     #     plt.imshow(seq_np.T, aspect='auto', origin='lower', cmap='viridis')
     #     plt.colorbar(label='Value')
-
-    #     # 关闭坐标轴刻度和边框
-    #     plt.axis('off')
-
+    #     plt.xlabel('seq_len')
+    #     plt.ylabel('seq_dim')
     #     plt.title('Tensor Heatmap')
-
-    #     # 保存时去除多余空白
-    #     plt.savefig(save_path, dpi=300, bbox_inches='tight', pad_inches=0)
-
-    #     plt.close()  # 关闭图，释放内存
+    #     plt.savefig(save_path, dpi=300, bbox_inches='tight')
