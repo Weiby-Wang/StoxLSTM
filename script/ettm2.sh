@@ -1,9 +1,13 @@
-if [ ! -d "./train_info" ]; then
-    mkdir ./train_info
+if [ ! -d "./train_info/ETTm2" ]; then
+    mkdir ./train_info/ETTm2
 fi
 
-if [ ! -d "./_wts" ]; then
-    mkdir ./_wts
+if [ ! -d "./_wts/ETTm2" ]; then
+    mkdir ./_wts/ETTm2
+fi
+
+if [ ! -d "./figure/ETTm2" ]; then
+    mkdir ./figure/ETTm2
 fi
 
 root_path_name=./_dat
@@ -54,8 +58,8 @@ do
         --learning_rate 6e-4 \
         --weight_decay 1e-4 \
         --device 'cuda' \
-        --figure_save_path ./figure/$data'_'$prediction_length.png \
+        --figure_save_path ./figure/$data/$data'_'$prediction_length.pdf \
         --pre_train_wts_load_path  "" \
-        --wts_load_path ./_wts/$data'_'$prediction_length.ckpt \
-        --wts_save_path ./_wts/$data'_'$prediction_length.ckpt > ./train_info/$data'_'$prediction_length.txt 2>&1
+        --wts_load_path ./_wts/$data/$data'_'$prediction_length.ckpt \
+        --wts_save_path ./_wts/$data/$data'_'$prediction_length.ckpt > ./train_info/$data/$data'_'$prediction_length.txt 2>&1
 done

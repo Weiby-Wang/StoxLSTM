@@ -1,9 +1,13 @@
-if [ ! -d "./train_info" ]; then
-    mkdir ./train_info
+if [ ! -d "./train_info/PEMS" ]; then
+    mkdir ./train_info/PEMS
 fi
 
-if [ ! -d "./_wts" ]; then
-    mkdir ./_wts
+if [ ! -d "./_wts/PEMS" ]; then
+    mkdir ./_wts/PEMS
+fi
+
+if [ ! -d "./figure/PEMS" ]; then
+    mkdir ./figure/PEMS
 fi
 
 root_path_name=./_dat/
@@ -51,10 +55,10 @@ python -u main.py \
     --learning_rate 3e-4 \
     --weight_decay 0 \
     --device 'cuda' \
-    --figure_save_path ./figure/PEMS03_12.png \
+    --figure_save_path ./figure/PEMS/PEMS03_12.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/PEMS03_12.ckpt \
-    --wts_save_path ./_wts/PEMS03_12.ckpt > ./train_info/PEMS03_12.txt 2>&1
+    --wts_load_path ./_wts/PEMS/PEMS03_12.ckpt \
+    --wts_save_path ./_wts/PEMS/PEMS03_12.ckpt > ./train_info/PEMS/PEMS03_12.txt 2>&1
 
 
 python -u main.py \
@@ -98,10 +102,10 @@ python -u main.py \
     --learning_rate 3e-4 \
     --weight_decay 0 \
     --device 'cuda' \
-    --figure_save_path ./figure/PEMS04_12.png \
+    --figure_save_path ./figure/PEMS/PEMS04_12.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/PEMS04_12.ckpt \
-    --wts_save_path ./_wts/PEMS04_12.ckpt > ./train_info/PEMS04_12.txt 2>&1
+    --wts_load_path ./_wts/PEMS/PEMS04_12.ckpt \
+    --wts_save_path ./_wts/PEMS/PEMS04_12.ckpt > ./train_info/PEMS/PEMS04_12.txt 2>&1
 
 
 python -u main.py \
@@ -145,10 +149,10 @@ python -u main.py \
     --learning_rate 3e-4 \
     --weight_decay 0 \
     --device 'cuda' \
-    --figure_save_path ./figure/PEMS07_12.png \
+    --figure_save_path ./figure/PEMS/PEMS07_12.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/PEMS07_12.ckpt \
-    --wts_save_path ./_wts/PEMS07_12.ckpt > ./train_info/PEMS07_12.txt 2>&1
+    --wts_load_path ./_wts/PEMS/PEMS07_12.ckpt \
+    --wts_save_path ./_wts/PEMS/PEMS07_12.ckpt > ./train_info/PEMS/PEMS07_12.txt 2>&1
 
 
 python -u main.py \
@@ -192,7 +196,7 @@ python -u main.py \
     --learning_rate 3e-4 \
     --weight_decay 0 \
     --device 'cuda' \
-    --figure_save_path ./figure/PEMS08_12.png \
+    --figure_save_path ./figure/PEMS/PEMS08_12.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/PEMS08_12.ckpt \
-    --wts_save_path ./_wts/PEMS08_12.ckpt > ./train_info/PEMS08_12.txt 2>&1
+    --wts_load_path ./_wts/PEMS/PEMS08_12.ckpt \
+    --wts_save_path ./_wts/PEMS/PEMS08_12.ckpt > ./train_info/PEMS/PEMS08_12.txt 2>&1

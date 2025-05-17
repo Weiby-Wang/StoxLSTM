@@ -1,9 +1,13 @@
-if [ ! -d "./train_info" ]; then
-    mkdir ./train_info
+if [ ! -d "./train_info/Solar" ]; then
+    mkdir ./train_info/Solar
 fi
 
-if [ ! -d "./_wts" ]; then
-    mkdir ./_wts
+if [ ! -d "./_wts/Solar" ]; then
+    mkdir ./_wts/Solar
+fi
+
+if [ ! -d "./figure/Solar" ]; then
+    mkdir ./figure/Solar
 fi
 
 root_path_name=./_dat/
@@ -58,5 +62,5 @@ do
         --figure_save_path ./figure/Solar/$data'_'$prediction_length.pdf \
         --pre_train_wts_load_path  "" \
         --wts_load_path ./_wts/Solar/$data'_'$prediction_length.ckpt \
-        --wts_save_path ./_wts/$data'_'$prediction_length.ckpt > ./train_info/Solar/$data'_figure'$prediction_length.txt 2>&1
+        --wts_save_path ./_wts/Solar/$data'_'$prediction_length.ckpt > ./train_info/Solar/$data'_figure'$prediction_length.txt 2>&1
 done

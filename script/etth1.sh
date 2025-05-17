@@ -1,9 +1,13 @@
-if [ ! -d "./train_info" ]; then
-    mkdir ./train_info
+if [ ! -d "./train_info/ETTh1" ]; then
+    mkdir ./train_info/ETTh1
 fi
 
-if [ ! -d "./_wts" ]; then
-    mkdir ./_wts
+if [ ! -d "./_wts/ETTh1" ]; then
+    mkdir ./_wts/ETTh1
+fi
+
+if [ ! -d "./figure/ETTh1" ]; then
+    mkdir ./figure/ETTh1
 fi
 
 root_path_name=./_dat/
@@ -52,10 +56,10 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-4 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data'_96'.png \
+    --figure_save_path ./figure/ETTh1/$data'_96'.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data'_96'.ckpt \
-    --wts_save_path ./_wts/$data'_96'.ckpt > ./train_info/$data'_96'.txt 2>&1
+    --wts_load_path ./_wts/ETTh1/$data'_96'.ckpt \
+    --wts_save_path ./_wts/ETTh1/$data'_96'.ckpt > ./train_info/ETTh1/$data'_96'.txt 2>&1
 
 
 python -u main.py \
@@ -99,10 +103,10 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-3 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data'_192'.png \
+    --figure_save_path ./figure/ETTh1/$data'_192'.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data'_192'.ckpt \
-    --wts_save_path ./_wts/$data'_192'.ckpt > ./train_info/$data'_192'.txt 2>&1
+    --wts_load_path ./_wts/ETTh1/$data'_192'.ckpt \
+    --wts_save_path ./_wts/ETTh1/$data'_192'.ckpt > ./train_info/ETTh1/$data'_192'.txt 2>&1
 
 
 python -u main.py \
@@ -146,10 +150,10 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-4 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data'_336'.png \
+    --figure_save_path ./figure/ETTh1/$data'_336'.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data'_336'.ckpt \
-    --wts_save_path ./_wts/$data'_336'.ckpt > ./train_info/$data'_336'.txt 2>&1
+    --wts_load_path ./_wts/ETTh1/$data'_336'.ckpt \
+    --wts_save_path ./_wts/ETTh1/$data'_336'.ckpt > ./train_info/ETTh1/$data'_336'.txt 2>&1
 
 
 python -u main.py \
@@ -193,7 +197,7 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-2 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data'_720'.png \
+    --figure_save_path ./figure/ETTh1/$data'_720'.pdf \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data'_720'.ckpt \
-    --wts_save_path ./_wts/$data'_720'.ckpt > ./train_info/$data'_720'.txt 2>&1
+    --wts_load_path ./_wts/ETTh1/$data'_720'.ckpt \
+    --wts_save_path ./_wts/ETTh1/$data'_720'.ckpt > ./train_info/ETTh1/$data'_720'.txt 2>&1

@@ -1,9 +1,13 @@
-if [ ! -d "./train_info" ]; then
-    mkdir ./train_info
+if [ ! -d "./train_info/solar" ]; then
+    mkdir ./train_info/solar
 fi
 
-if [ ! -d "./_wts" ]; then
-    mkdir ./_wts
+if [ ! -d "./_wts/solar" ]; then
+    mkdir ./_wts/solar
+fi
+
+if [ ! -d "./figure/solar" ]; then
+    mkdir ./figure/solar
 fi
 
 root_path_name=./_dat/
@@ -54,8 +58,8 @@ do
         --learning_rate 1e-3 \
         --weight_decay 0 \
         --device 'cuda' \
-        --figure_save_path ./figure/$data/$data'_'$prediction_length.png \
+        --figure_save_path ./figure/$data/$data'_'$prediction_length.pdf \
         --pre_train_wts_load_path  "" \
-        --wts_load_path ./_wts/$data'_'$prediction_length.ckpt \
-        --wts_save_path ./_wts/$data'_'$prediction_length.ckpt > ./train_info/Solar/$data'_'$prediction_length.txt 2>&1
+        --wts_load_path ./_wts/$data/$data'_'$prediction_length.ckpt \
+        --wts_save_path ./_wts/$data/$data'_'$prediction_length.ckpt > ./train_info/Solar/$data'_'$prediction_length.txt 2>&1
 done

@@ -1,9 +1,13 @@
-if [ ! -d "./train_info" ]; then
-    mkdir ./train_info
+if [ ! -d "./train_info/Weather" ]; then
+    mkdir ./train_info/Weather
 fi
 
-if [ ! -d "./_wts" ]; then
-    mkdir ./_wts
+if [ ! -d "./_wts/Weather" ]; then
+    mkdir ./_wts/Weather
+fi
+
+if [ ! -d "./figure/Weather" ]; then
+    mkdir ./figure/Weather
 fi
 
 root_path_name=./_dat/
@@ -54,8 +58,8 @@ do
         --learning_rate 1e-3 \
         --weight_decay 1e-5 \
         --device 'cuda' \
-        --figure_save_path ./figure/$data/$data'_'$prediction_length'_fine_tune'.png \
-        --pre_train_wts_load_path  "./_wts/$data/$data"_pre_training".ckpt" \
-        --wts_load_path ./_wts/$data/$data'_'$prediction_length'_fine_tune'.ckpt \
-        --wts_save_path ./_wts/$data/$data'_'$prediction_length'_fine_tune'.ckpt > ./train_info/$data/$data'_'$prediction_length'_fine_tune'.txt 2>&1
+        --figure_save_path ./figure/$data/$data'_'$prediction_length.pdf \
+        --pre_train_wts_load_path  "" \
+        --wts_load_path ./_wts/$data/$data'_'$prediction_length.ckpt \
+        --wts_save_path ./_wts/$data/$data'_'$prediction_length.ckpt > ./train_info/$data/$data'_'$prediction_length.txt 2>&1
 done
