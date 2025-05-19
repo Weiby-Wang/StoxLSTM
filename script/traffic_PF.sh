@@ -1,9 +1,13 @@
-if [ ! -d "../train_info" ]; then
-    mkdir ../train_info
+if [ ! -d "./train_info/Traffic" ]; then
+    mkdir ./train_info/Traffic
 fi
 
-if [ ! -d "../_wts" ]; then
-    mkdir ../_wts
+if [ ! -d "./_wts/Traffic" ]; then
+    mkdir ./_wts/Traffic
+fi
+
+if [ ! -d "./figure/Traffic" ]; then
+    mkdir ./figure/Traffic
 fi
 
 root_path_name=../_dat/
@@ -53,9 +57,9 @@ do
         --batch_size 100 \
         --learning_rate 8e-4 \
         --weight_decay 1e-4 \
-        --device 'cuda:2' \
-        --figure_save_path ../figure/$data/$data'_'$prediction_length'_pre_train'.png \
-        --pre_train_wts_load_path  "../_wts/Traffic_pre_training.ckpt" \
-        --wts_load_path ../_wts/$data'_'$prediction_length'_pre_train'.ckpt \
-        --wts_save_path ../_wts/$data'_'$prediction_length'_pre_train'.ckpt > ../train_info/$data/$data'_'$prediction_length'_pre_train'.txt 2>&1
+        --device 'cuda' \
+        --figure_save_path ../figure/$data/$data'_'$prediction_length.pdf \
+        --pre_train_wts_load_path  "" \
+        --wts_load_path ../_wts/$data/$data'_'$prediction_length.ckpt \
+        --wts_save_path ../_wts/$data/$data'_'$prediction_length.ckpt > ../train_info/$data/$data'_'$prediction_length.txt 2>&1
 done
