@@ -192,4 +192,3 @@ if args.is_test:
 
 if args.plot_result:
     trainer.plot_forecasting_results()
-    #trainer.plot_heatmap()

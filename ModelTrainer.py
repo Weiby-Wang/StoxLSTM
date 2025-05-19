@@ -234,98 +234,48 @@ class ModelTrainer:
         plt.rcParams['xtick.labelsize']  = 18
         plt.rcParams['ytick.labelsize']  = 18 
         plt.rcParams['legend.fontsize']  = 20
+
+        color_label_seq = (48/255, 104/255, 141/255) #blue
+        color_one_sample = (251/255, 132/255, 2/255) #orange
+        color_confidence_interval = (255/255, 202/255, 95/255) #green
         
         plt.subplot(2, 3, 1)
-        plt.plot(label_seq_dim1, label='Real sequence', color='blue', linewidth=1)
-        plt.plot(time_steps, one_sample_dim1, label='A sampled Forecasting', color='orange', linewidth=1)
-        plt.fill_between(time_steps, lower_bound_dim1, upper_bound_dim1, color='green', linewidth=6, alpha=0.6, label='98% Confidence Interval')
+        plt.plot(label_seq_dim1, label='Real sequence', color=color_label_seq, linewidth=2)
+        plt.plot(time_steps, one_sample_dim1, label='A sampled Forecasting', color=color_one_sample, linewidth=2)
+        plt.fill_between(time_steps, lower_bound_dim1, upper_bound_dim1, color="green", linewidth=8, alpha=0.3, label='98% Confidence Interval')
         plt.xticks([])
         #plt.legend()
         
         plt.subplot(2, 3, 2)
-        plt.plot(label_seq_dim2, label='Real sequence', color='blue', linewidth=1)
-        plt.plot(time_steps, one_sample_dim2, label='A sampled Forecasting', color='orange', linewidth=1)
-        plt.fill_between(time_steps, lower_bound_dim2, upper_bound_dim2, color='green', linewidth=6, alpha=0.6, label='98% Confidence Interval')     
+        plt.plot(label_seq_dim2, label='Real sequence', color=color_label_seq, linewidth=2)
+        plt.plot(time_steps, one_sample_dim2, label='A sampled Forecasting', color=color_one_sample, linewidth=2)
+        plt.fill_between(time_steps, lower_bound_dim2, upper_bound_dim2, color="green", linewidth=8, alpha=0.3, label='98% Confidence Interval')     
         plt.xticks([])
         
         plt.subplot(2, 3, 3)
-        plt.plot(label_seq_dim3, label='Real sequence', color='blue', linewidth=1)
-        plt.plot(time_steps, one_sample_dim3, label='A sampled Forecasting', color='orange', linewidth=1)
-        plt.fill_between(time_steps, lower_bound_dim3, upper_bound_dim3, color='green', linewidth=6, alpha=0.6, label='98% Confidence Interval')
+        plt.plot(label_seq_dim3, label='Real sequence', color=color_label_seq, linewidth=2)
+        plt.plot(time_steps, one_sample_dim3, label='A sampled Forecasting', color=color_one_sample, linewidth=2)
+        plt.fill_between(time_steps, lower_bound_dim3, upper_bound_dim3, color="green", linewidth=8, alpha=0.3, label='98% Confidence Interval')
         plt.xticks([])
         
         plt.subplot(2, 3, 4)
-        plt.plot(label_seq_dim4, label='Real sequence', color='blue', linewidth=1)
-        plt.plot(time_steps, one_sample_dim4, label='A sampled Forecasting', color='orange', linewidth=1)
-        plt.fill_between(time_steps, lower_bound_dim4, upper_bound_dim4, color='green', linewidth=6, alpha=0.6, label='98% Confidence Interval')
+        plt.plot(label_seq_dim4, label='Real sequence', color=color_label_seq, linewidth=2)
+        plt.plot(time_steps, one_sample_dim4, label='A sampled Forecasting', color=color_one_sample, linewidth=2)
+        plt.fill_between(time_steps, lower_bound_dim4, upper_bound_dim4, color="green", linewidth=8, alpha=0.3, label='98% Confidence Interval')
         plt.xticks([])
         
         plt.subplot(2, 3, 5)
-        plt.plot(label_seq_dim5, label='Real sequence', color='blue', linewidth=1)
-        plt.plot(time_steps, one_sample_dim5, label='A sampled Forecasting', color='orange', linewidth=1)
-        plt.fill_between(time_steps, lower_bound_dim5, upper_bound_dim5, color='green',linewidth=6, alpha=0.6, label='98% Confidence Interval')  
+        plt.plot(label_seq_dim5, label='Real sequence', color=color_label_seq, linewidth=2)
+        plt.plot(time_steps, one_sample_dim5, label='A sampled Forecasting', color=color_one_sample, linewidth=2)
+        plt.fill_between(time_steps, lower_bound_dim5, upper_bound_dim5, color="green",linewidth=8, alpha=0.3, label='98% Confidence Interval')  
         plt.xticks([])   
         
         plt.subplot(2, 3, 6)
-        plt.plot(label_seq_dim6, label='Real sequence', color='blue', linewidth=1)
-        plt.plot(time_steps, one_sample_dim6, label='A sampled Forecasting', color='orange', linewidth=1)
-        plt.fill_between(time_steps, lower_bound_dim6, upper_bound_dim6, color='green', linewidth=6, alpha=0.6, label='98% Confidence Interval')
+        plt.plot(label_seq_dim6, label='Real sequence', color=color_label_seq, linewidth=2)
+        plt.plot(time_steps, one_sample_dim6, label='A sampled Forecasting', color=color_one_sample, linewidth=2)
+        plt.fill_between(time_steps, lower_bound_dim6, upper_bound_dim6, color="green", linewidth=8, alpha=0.3, label='98% Confidence Interval')
         plt.xticks([])
         
         plt.tight_layout()
         plt.savefig(self.args.figure_save_path, dpi=300, bbox_inches='tight')
         print('=' * 15)
-
-
-
-    # def plot_heatmap(self):
-    #     print('=' * 15)
-    #     print('Plotting a probabilistic forecasting result figure.')
-    #     self.model.load_state_dict(torch.load(self.args.wts_load_path))
-
-    #     self.model.eval()
-    #     with torch.no_grad():
-    #         for step, (_, b_y) in enumerate(self.test_loader):
-    #             b_y = b_y.to(self.device)
-    #             break
-        
-    #     # decomp_module = series_decomp(kernel_size=25)
-    #     # res_init, trend_init = decomp_module(b_y.cpu())
-
-    #     # res_T = res_init[-1, :, -1]
-    #     # res_c = torch.cat((res_T[:96], torch.zeros(48)), dim=0)
-
-    #     # plt.figure(figsize=(8, 2))
-    #     # plt.plot(torch.cat((torch.zeros(28), res_c), dim=0))
-    #     # plt.axis('off')
-    #     # plt.savefig("figure/res_c")
-
-    #     # plt.figure(figsize=(8, 2))
-    #     # plt.plot(torch.cat((torch.zeros(28), res_T), dim=0))
-    #     # plt.axis('off')
-    #     # plt.savefig("figure/res_t")
-    #     xT_P, xC_P, xT_P_flatten, hT, gT_, xT_, meanq, logvarq, meanp, logvarp = self.model(b_y)
-
-    #     self.plot_heatmap_figure(xT_P[-1, : , :], 'figure/xT_P.png')
-    #     self.plot_heatmap_figure(xC_P[-1, : , :], 'figure/xC_P.png')
-    #     self.plot_heatmap_figure(xT_P_flatten[-1, : , :], 'figure/xT_P_flatten.png')
-    #     self.plot_heatmap_figure(meanq[-1, : , :], 'figure/meanq.png')
-    #     self.plot_heatmap_figure(logvarq[-1, : , :], 'figure/logvarq.png')
-    #     self.plot_heatmap_figure(meanp[-1, : , :], 'figure/meanp.png')
-    #     self.plot_heatmap_figure(logvarp[-1, : , :], 'figure/logvarp.png')
-    #     self.plot_heatmap_figure(logvarp[-1, : , :], 'figure/logvarp.png')
-    #     self.plot_heatmap_figure(hT[-1, : , :], 'figure/hT.png')
-    #     self.plot_heatmap_figure(gT_[-1, : , :], 'figure/gT_.png')
-
-
-    # def plot_heatmap_figure(self, seq, save_path):
-    #     # seq [seq_len, seq_dim]
-    #     seq_np = seq.cpu().detach().numpy()
-
-    #     plt.figure(figsize=(10, 6))
-    #     plt.imshow(seq_np.T, aspect='auto', origin='lower', cmap='viridis')
-    #     plt.colorbar(label='Value')
-    #     plt.xlabel('seq_len')
-    #     plt.ylabel('seq_dim')
-    #     plt.title('Tensor Heatmap')
-    #     plt.savefig(save_path, dpi=300, bbox_inches='tight')
