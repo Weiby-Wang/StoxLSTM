@@ -251,8 +251,8 @@ class Z_generation_model(nn.Module):
         z_mean = torch.zeros(bs, self.N, self.d_latent).to(self.device)
         z_logvar = torch.zeros(bs, self.N, self.d_latent).to(self.device)
         
-        #z0 = torch.zeros(bs, self.d_latent).to(self.device)
-        z0 = torch.randn(bs, self.d_latent).to(self.device)
+        z0 = torch.zeros(bs, self.d_latent).to(self.device)
+        #z0 = torch.randn(bs, self.d_latent).to(self.device)
         reparameterization_z_input = torch.cat((hidden_state[:, 0, :], z0), dim=-1) #[bs, d_hidden+d_latent]
         zT[:, 0, :], z_mean[:, 0, :], z_logvar[:, 0, :] = self.reparameterization(reparameterization_z_input) #得到z1
         
