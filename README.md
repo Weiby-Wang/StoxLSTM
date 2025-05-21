@@ -8,4 +8,4 @@ StoxLSTM: A Stochastic xLSTM for Probabilistic Time Series Forecasting
 bash ./script/ili.sh
 ```
 
-You can adjust the hyperparameters based on your needs.
+You can adjust the hyperparameters based on your needs. The class Z_generation_model() in the StoxLSTM_layers.py demonstrates two methods for initializing the latent variable z0: one by sampling from a standard normal distribution, and the other by initializing directly with a constant zero vector. These two initialization approaches lead to subtle differences in training performance across different datasets. Adjusting the initialization method of z0 can help achieve improved training outcomes.

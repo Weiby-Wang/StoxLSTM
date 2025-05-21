@@ -207,20 +207,6 @@ class RevIN(nn.Module):
             x = x + self.mean
         return x
     
-'''
-def Padding_Patch_Layer(x, patch_stride, patch_length):
-    #[bs, d_seq, seq_len] => 
-    #[bs, d_seq, patch_num, patch_length]
-    T = x.size(-1)
-    N = ceil((T - patch_length) / patch_stride) + 1 #patch num
-    
-    replication_padding = nn.ReplicationPad1d((0, patch_stride))
-    x_padding = replication_padding(x)
-    x_P = x_padding.unfold(dimension=-1, size=patch_length, step=patch_stride) #[bs, d_seq, N+, patch_len]
-    x_P = x_P[:, :, :N, :] ##[bs, d_seq, N, patch_len]
-    
-    return x_P
-'''
 def Padding_Patch_Layer(x, patch_stride, patch_size):
     #[bs, d_seq, seq_len] => 
     #[bs, d_seq, patch_num, patch_size]
