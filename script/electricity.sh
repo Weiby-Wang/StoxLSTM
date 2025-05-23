@@ -1,13 +1,13 @@
 if [ ! -d "./train_info/Electricity" ]; then
-    mkdir ./train_info/Electricity
+    mkdir -p ./train_info/Electricity
 fi
 
 if [ ! -d "./_wts/Electricity" ]; then
-    mkdir ./_wts/Electricity
+    mkdir -p ./_wts/Electricity
 fi
 
 if [ ! -d "./figure/Electricity" ]; then
-    mkdir ./figure/Electricity
+    mkdir -p ./figure/Electricity
 fi
 
 root_path_name=./_dat/
@@ -59,7 +59,7 @@ python -u main.py \
     --figure_save_path ./figure/$data/$data'_96'.pdf \
     --pre_train_wts_load_path  "" \
     --wts_load_path ./_wts/$data/$data'_96'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_96'.ckpt > ./train_info/$data'_96'.txt 2>&1
+    --wts_save_path ./_wts/$data/$data'_96'.ckpt > ./train_info/$data/$data'_96'.txt 2>&1
 
 
 python -u main.py \
@@ -106,7 +106,7 @@ python -u main.py \
     --figure_save_path ./figure/$data/$data'_192'.pdf \
     --pre_train_wts_load_path  "" \
     --wts_load_path ./_wts/$data/$data'_192'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_192'.ckpt > ./train_info/$data'_192'.txt 2>&1
+    --wts_save_path ./_wts/$data/$data'_192'.ckpt > ./train_info/$data/$data'_192'.txt 2>&1
 
 
 python -u main.py \
@@ -153,7 +153,7 @@ python -u main.py \
     --figure_save_path ./figure/$data/$data'_336'.pdf \
     --pre_train_wts_load_path  "" \
     --wts_load_path ./_wts/$data/$data'_336'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_336'.ckpt > ./train_info/$data'_336'.txt 2>&1
+    --wts_save_path ./_wts/$data/$data'_336'.ckpt > ./train_info/$data/$data'_336'.txt 2>&1
 
 
 python -u main.py \
@@ -200,4 +200,4 @@ python -u main.py \
     --figure_save_path ./figure/$data/$data'_720'.pdf \
     --pre_train_wts_load_path  "" \
     --wts_load_path ./_wts/$data/$data'_720'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_720'.ckpt > ./train_info/$data'_720'.txt 2>&1
+    --wts_save_path ./_wts/$data/$data'_720'.ckpt > ./train_info/$data/$data'_720'.txt 2>&1

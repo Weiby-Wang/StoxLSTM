@@ -1,13 +1,13 @@
 if [ ! -d "./train_info/PEMS" ]; then
-    mkdir ./train_info/PEMS
+    mkdir -p ./train_info/PEMS
 fi
 
 if [ ! -d "./_wts/PEMS" ]; then
-    mkdir ./_wts/PEMS
+    mkdir -p ./_wts/PEMS
 fi
 
 if [ ! -d "./figure/PEMS" ]; then
-    mkdir ./figure/PEMS
+    mkdir -p ./figure/PEMS
 fi
 
 root_path_name=./_dat/

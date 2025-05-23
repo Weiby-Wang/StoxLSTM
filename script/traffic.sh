@@ -1,16 +1,16 @@
 if [ ! -d "./train_info/Traffic" ]; then
-    mkdir ./train_info/Traffic
+    mkdir -p ./train_info/Traffic
 fi
 
 if [ ! -d "./_wts/Traffic" ]; then
-    mkdir ./_wts/Traffic
+    mkdir -p ./_wts/Traffic
 fi
 
 if [ ! -d "./figure/Traffic" ]; then
-    mkdir ./figure/Traffic
+    mkdir -p ./figure/Traffic
 fi
 
-root_path_name=../_dat/
+root_path_name=./_dat/
 random_seed=3407
 data='Traffic'
 look_back_length=336

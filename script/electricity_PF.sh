@@ -1,13 +1,13 @@
 if [ ! -d "./train_info/Electricity" ]; then
-    mkdir ./train_info/Electricity
+    mkdir -p ./train_info/Electricity
 fi
 
 if [ ! -d "./_wts/Electricity" ]; then
-    mkdir ./_wts/Electricity
+    mkdir -p ./_wts/Electricity
 fi
 
 if [ ! -d "./figure/Electricity" ]; then
-    mkdir ./figure/Electricity
+    mkdir -p ./figure/Electricity
 fi
 
 root_path_name=./_dat/

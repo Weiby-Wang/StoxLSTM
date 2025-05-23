@@ -1,13 +1,13 @@
 if [ ! -d "./train_info/Solar" ]; then
-    mkdir ./train_info/Solar
+    mkdir -p ./train_info/Solar
 fi
 
 if [ ! -d "./_wts/Solar" ]; then
-    mkdir ./_wts/Solar
+    mkdir -p ./_wts/Solar
 fi
 
 if [ ! -d "./figure/Solar" ]; then
-    mkdir ./figure/Solar
+    mkdir -p ./figure/Solar
 fi
 
 root_path_name=./_dat/

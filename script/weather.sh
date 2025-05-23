@@ -1,13 +1,13 @@
 if [ ! -d "./train_info/Weather" ]; then
-    mkdir ./train_info/Weather
+    mkdir -p /train_info/Weather
 fi
 
 if [ ! -d "./_wts/Weather" ]; then
-    mkdir ./_wts/Weather
+    mkdir -p ./_wts/Weather
 fi
 
 if [ ! -d "./figure/Weather" ]; then
-    mkdir ./figure/Weather
+    mkdir -p ./figure/Weather
 fi
 
 root_path_name=./_dat/

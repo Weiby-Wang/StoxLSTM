@@ -1,13 +1,13 @@
 if [ ! -d "./train_info/ILI" ]; then
-    mkdir ./train_info/ILI
+    mkdir -p ./train_info/ILI
 fi
 
 if [ ! -d "./_wts/ILI" ]; then
-    mkdir ./_wts/ILI
+    mkdir -p ./_wts/ILI
 fi
 
 if [ ! -d "./figure/ILI" ]; then
-    mkdir ./figure/ILI
+    mkdir -p ./figure/ILI
 fi
 
 root_path_name=./_dat/

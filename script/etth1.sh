@@ -1,13 +1,13 @@
 if [ ! -d "./train_info/ETTh1" ]; then
-    mkdir ./train_info/ETTh1
+    mkdir -p ./train_info/ETTh1
 fi
 
 if [ ! -d "./_wts/ETTh1" ]; then
-    mkdir ./_wts/ETTh1
+    mkdir -p ./_wts/ETTh1
 fi
 
 if [ ! -d "./figure/ETTh1" ]; then
-    mkdir ./figure/ETTh1
+    mkdir -p ./figure/ETTh1
 fi
 
 root_path_name=./_dat/
