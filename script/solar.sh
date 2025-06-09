@@ -51,8 +51,8 @@ do
         --mlp_x_p_hidden_layers_num 1 \
         --mlp_x_hidden_dim 64 \
         --mlp_x_hidden_layers_num 2 \
-        --is_training 0 \
-        --is_test 0 \
+        --is_training 1 \
+        --is_test 1 \
         --plot_result 1 \
         --train_epoches 256 \
         --batch_size 22 \
@@ -62,5 +62,5 @@ do
         --figure_save_path ./figure/Solar/$data'_'$prediction_length.pdf \
         --pre_train_wts_load_path  "" \
         --wts_load_path ./_wts/Solar/$data'_'$prediction_length.ckpt \
-        --wts_save_path ./_wts/Solar/$data'_'$prediction_length.ckpt > ./train_info/Solar/$data'_figure'$prediction_length.txt 2>&1
+        --wts_save_path ./_wts/Solar/$data'_'$prediction_length.ckpt > ./train_info/Solar/$data'_'$prediction_length.txt 2>&1
 done
