@@ -49,7 +49,7 @@ python -u main.py \
     --mlp_x_p_hidden_layers_num 1 \
     --mlp_x_hidden_dim 64 \
     --mlp_x_hidden_layers_num 1 \
-    --is_training 0 \
+    --is_training 1 \
     --is_test 1 \
     --plot_result 1 \
     --train_epoches 256 \
