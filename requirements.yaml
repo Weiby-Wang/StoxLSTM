@@ -1,4 +1,4 @@
-name: xlstm
+name: Stoxlstm
 channels:
   - pytorch
   - defaults

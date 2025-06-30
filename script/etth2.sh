@@ -58,8 +58,8 @@ do
         --learning_rate 6e-4 \
         --weight_decay 1e-4 \
         --device 'cuda' \
-        --figure_save_path ./figure/ETTh2/$data'_'$prediction_length'_fine_tune'.pdf \
+        --figure_save_path ./figure/ETTh2/$data'_'$prediction_length.pdf \
         --pre_train_wts_load_path  "" \
-        --wts_load_path ./_wts/ETTh2/$data'_'$prediction_length'_fine_tune'.ckpt \
-        --wts_save_path ./_wts/ETTh2/$data'_'$prediction_length'_fine_tune'.ckpt > ./train_info/ETTh2/$data'_'$prediction_length'_fine_tune'.txt 2>&1
+        --wts_load_path ./_wts/ETTh2/$data'_'$prediction_length.ckpt \
+        --wts_save_path ./_wts/ETTh2/$data'_'$prediction_length.ckpt > ./train_info/ETTh2/$data'_'$prediction_length.txt 2>&1
 done
