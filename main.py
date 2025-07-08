@@ -145,7 +145,7 @@ dataset_classes = {
     'ETTh2': Dataset_ETT_hour,
     'ETTm1': Dataset_ETT_minute,
     'ETTm2': Dataset_ETT_minute,
-    'Trafffic': Dataset_General,
+    'Traffic': Dataset_General,
     'PEMS03': Dataset_PEMS,
     'PEMS04': Dataset_PEMS,
     'PEMS07': Dataset_PEMS,
