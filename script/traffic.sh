@@ -56,7 +56,7 @@ python -u main.py \
     --batch_size 35 \
     --learning_rate 3e-4 \
     --weight_decay 1e-4 \
-    --device 'cuda:1' \
+    --device 'cuda' \
     --figure_save_path ./figure/$data/$data'_96'.pdf \
     --pre_train_wts_load_path  "" \
     --wts_load_path ./_wts/$data/$data'_96'.ckpt \
@@ -99,11 +99,11 @@ python -u main.py \
     --is_training 1 \
     --is_test 1 \
     --plot_result 1 \
-    --train_epoches 128 \
+    --train_epoches 256 \
     --batch_size 30 \
     --learning_rate 3e-4 \
     --weight_decay 1e-4 \
-    --device 'cuda:1' \
+    --device 'cuda' \
     --figure_save_path ./figure/$data/$data'_192'.pdf \
     --pre_train_wts_load_path  "" \
     --wts_load_path ./_wts/$data/$data'_192'.ckpt \
@@ -146,11 +146,11 @@ python -u main.py \
     --is_training 1 \
     --is_test 1 \
     --plot_result 1 \
-    --train_epoches 128 \
+    --train_epoches 256 \
     --batch_size 20 \
     --learning_rate 3e-4 \
     --weight_decay 1e-3 \
-    --device 'cuda:1' \
+    --device 'cuda' \
     --figure_save_path ./figure/$data/$data'_336'.pdf \
     --pre_train_wts_load_path  "" \
     --wts_load_path ./_wts/$data/$data'_336'.ckpt \
@@ -163,7 +163,7 @@ python -u main.py \
     --features 'M' \
     --look_back_length $look_back_length \
     --label_len $look_back_length \
-    --prediction_length 336 \
+    --prediction_length 720 \
     --decomposition 1 \
     --kernel_size 25 \
     --revin 1 \
@@ -196,8 +196,8 @@ python -u main.py \
     --batch_size 22 \
     --learning_rate 3e-4 \
     --weight_decay 1e-3 \
-    --device 'cuda:2' \
+    --device 'cuda' \
     --figure_save_path ./figure/$data/$data'_720'.pdf \
     --pre_train_wts_load_path  '' \
     --wts_load_path ./_wts/$data/$data'_720'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_720'.ckpt > ../train_info/$data/$data'_720'.txt 2>&1
+    --wts_save_path ./_wts/$data/$data'_720'.ckpt > ./train_info/$data/$data'_720'.txt 2>&1
