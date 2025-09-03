@@ -229,7 +229,7 @@ class ModelTrainer:
         label_seq_dim6 = b_y[-1, self.args.look_back_length-96:, -6].cpu().numpy()
         
         #plot figure
-        plt.figure(figsize=(20, 8))
+        plt.figure(figsize=(20, 6))
         
         plt.rcParams['xtick.labelsize']  = 18
         plt.rcParams['ytick.labelsize']  = 18 
