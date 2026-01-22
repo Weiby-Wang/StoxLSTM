@@ -1,5 +1,5 @@
 if [ ! -d "./train_info/Weather" ]; then
-    mkdir -p /train_info/Weather
+    mkdir -p ./train_info/Weather
 fi
 
 if [ ! -d "./_wts/Weather" ]; then
@@ -27,8 +27,8 @@ python -u main.py \
     --kernel_size 25 \
     --revin 1 \
     --subtract_last 0 \
-    --patch_size 56 \
-    --patch_stride 24 \
+    --patch_size 32 \
+    --patch_stride 32 \
     --patch_and_CI 1 \
     --d_seq 21 \
     --d_model 64 \
@@ -56,10 +56,10 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-4 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data/$data'_96'.pdf \
+    --figure_save_path ./figure/$data'_96'.png \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data/$data'_96'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_96'.ckpt > ./train_info/$data/$data'_96'.txt 2>&1
+    --wts_load_path ./_wts/$data'_96'.ckpt \
+    --wts_save_path ./_wts/$data'_96'.ckpt > ./train_info/$data'_96'.txt 2>&1
 
 
 python -u main.py \
@@ -74,8 +74,8 @@ python -u main.py \
     --kernel_size 25 \
     --revin 1 \
     --subtract_last 0 \
-    --patch_size 56 \
-    --patch_stride 24 \
+    --patch_size 64 \
+    --patch_stride 64 \
     --patch_and_CI 1 \
     --d_seq 21 \
     --d_model 64 \
@@ -103,10 +103,10 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-4 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data/$data'_192'.pdf \
+    --figure_save_path ./figure/$data'_192'.png \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data/$data'_192'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_192'.ckpt > ./train_info/$data/$data'_192'.txt 2>&1
+    --wts_load_path ./_wts/$data'_192'.ckpt \
+    --wts_save_path ./_wts/$data'_192'.ckpt > ./train_info/$data'_192'.txt 2>&1
 
 
 python -u main.py \
@@ -121,8 +121,8 @@ python -u main.py \
     --kernel_size 25 \
     --revin 1 \
     --subtract_last 0 \
-    --patch_size 56 \
-    --patch_stride 24 \
+    --patch_size 32 \
+    --patch_stride 32 \
     --patch_and_CI 1 \
     --d_seq 21 \
     --d_model 64 \
@@ -150,10 +150,10 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-2 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data/$data'_336'.pdf \
+    --figure_save_path ./figure/$data'_336'.png \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data/$data'_336'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_336'.ckpt > ./train_info/$data/$data'_336'.txt 2>&1
+    --wts_load_path ./_wts/$data'_336'.ckpt \
+    --wts_save_path ./_wts/$data'_336'.ckpt > ./train_info/$data'_336'.txt 2>&1
 
 
 python -u main.py \
@@ -168,8 +168,8 @@ python -u main.py \
     --kernel_size 25 \
     --revin 1 \
     --subtract_last 0 \
-    --patch_size 56 \
-    --patch_stride 24 \
+    --patch_size 16 \
+    --patch_stride 16 \
     --patch_and_CI 1 \
     --d_seq 21 \
     --d_model 64 \
@@ -197,7 +197,7 @@ python -u main.py \
     --learning_rate 6e-4 \
     --weight_decay 1e-2 \
     --device 'cuda' \
-    --figure_save_path ./figure/$data/$data'_720'.pdf \
+    --figure_save_path ./figure/$data'_720'.png \
     --pre_train_wts_load_path  "" \
-    --wts_load_path ./_wts/$data/$data'_720'.ckpt \
-    --wts_save_path ./_wts/$data/$data'_720'.ckpt > ./train_info/$data/$data'_720'.txt 2>&1
+    --wts_load_path ./_wts/$data'_720'.ckpt \
+    --wts_save_path ./_wts/$data'_720'.ckpt > ./train_info/$data'_720'.txt 2>&1
