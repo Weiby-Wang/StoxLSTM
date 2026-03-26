@@ -1,3 +1,5 @@
+"""StoxLSTM: Top-level model with optional series decomposition."""
+
 __all__ = ['StoxLSTM']
 
 import torch
@@ -5,7 +7,17 @@ import torch.nn as nn
 from StoxLSTM_backbone import StoxLSTM_backbone, StoxLSTM_backbone_WO_PCI
 from StoxLSTM_layers import series_decomp
 
+
 class Model(nn.Module):
+    """StoxLSTM forecasting model.
+
+    Supports optional series decomposition (trend + residual) and
+    two backbone variants: with or without patching and channel independence (PCI).
+
+    Args:
+        configs: Configuration namespace containing all hyperparameters.
+    """
+
     def __init__(self, configs):
         super().__init__()
         
@@ -18,9 +30,9 @@ class Model(nn.Module):
         patch_size, patch_stride = configs.patch_size, configs.patch_stride
         dropout = configs.fc_dropout
         device = configs.device
-        
 
         if self.decomposition:
+            # Series decomposition: separate trend and residual components
             self.decomp_module = series_decomp(kernel_size=kernel_size)
             if patch_and_CI:
                 self.model_trend = StoxLSTM_backbone(d_seq=d_seq, d_model=d_model, d_latent=d_latent, look_back_length=look_back_length, prediction_length=prediction_length, 
@@ -58,6 +70,7 @@ class Model(nn.Module):
                                                         mlp_x_hidden_dim=configs.mlp_x_hidden_dim, mlp_x_hidden_layers_num=configs.mlp_x_hidden_layers_num,
                                                         device=device, subtract_last=subtract_last, revin=revin, dropout=dropout)
         else:
+            # No decomposition: use a single backbone model
             if patch_and_CI:
                 self.model = StoxLSTM_backbone(d_seq=d_seq, d_model=d_model, d_latent=d_latent, look_back_length=look_back_length, prediction_length=prediction_length, 
                                                     patch_size=patch_size, patch_stride=patch_stride,
@@ -78,47 +91,41 @@ class Model(nn.Module):
                                                         mlp_x_hidden_dim=configs.mlp_x_hidden_dim, mlp_x_hidden_layers_num=configs.mlp_x_hidden_layers_num,
                                                         device=device, subtract_last=subtract_last, revin=revin, dropout=dropout)
             
-    def forward(self, x):   #x [bs, seq_len, seq_dim]
+    def forward(self, x):
+        """Forward pass.
+
+        Args:
+            x: Input tensor of shape [bs, seq_len, seq_dim].
+
+        Returns:
+            Tuple of (predictions, meanq, logvarq, meanp, logvarp).
+        """
         if self.decomposition:
+            # Decompose input into residual and trend components
             res_init, trend_init = self.decomp_module(x)
 
-            res_init, trend_init = res_init.permute(0, 2, 1), trend_init.permute(0, 2, 1)  # x: [bs, seq_dim, seq_len]
+            res_init, trend_init = res_init.permute(0, 2, 1), trend_init.permute(0, 2, 1)  # [bs, seq_dim, seq_len]
             
-            res, res_meanq, res_logvarq, res_meanp, res_logvarp = self.model_res(res_init) #xT_, meanq, logvarq, meanp, logvarp
+            # Process each component through its own backbone
+            res, res_meanq, res_logvarq, res_meanp, res_logvarp = self.model_res(res_init)
             trend, trend_meanq, trend_logvarq, trend_meanp, trend_logvarp = self.model_trend(trend_init)
             
+            # Combine predictions from both components
             x = res + trend
 
-            meanq, logvarq = torch.cat((res_meanq, trend_meanq), dim=-1), torch.cat((res_logvarq, trend_logvarq), dim=-1)
-            meanp, logvarp = torch.cat((res_meanp, trend_meanp), dim=-1), torch.cat((res_logvarp, trend_logvarp), dim=-1) #[bs, N, d_latent*2]
+            # Concatenate latent distributions from both components
+            meanq = torch.cat((res_meanq, trend_meanq), dim=-1)
+            logvarq = torch.cat((res_logvarq, trend_logvarq), dim=-1)
+            meanp = torch.cat((res_meanp, trend_meanp), dim=-1)
+            logvarp = torch.cat((res_logvarp, trend_logvarp), dim=-1)  # [bs, N, d_latent*2]
 
-            x = x.permute(0, 2, 1) # x: [bs, seq_len, seq_dim]
-        #     res_init, trend_init = self.decomp_module(x)
-
-        #     res_init, trend_init = res_init.permute(0, 2, 1), trend_init.permute(0, 2, 1)  # x: [bs, seq_dim, seq_len]
-            
-        #     res_xT_P, res_xC_P, res_xT_P_flatten, res_hT, res_gT_, res, res_meanq, res_logvarq, res_meanp, res_logvarp = self.model_res(res_init) #xT_, meanq, logvarq, meanp, logvarp
-        #     trend_xT_P, trend_xC_P, trend_xT_P_flatten, trend_hT, trend_gT_, trend, trend_meanq, trend_logvarq, trend_meanp, trend_logvarp = self.model_trend(trend_init)
-            
-        #     x = res + trend
-        #     xT_P = res_xT_P
-        #     xC_P = res_xC_P
-        #     xT_P_flatten = res_xT_P_flatten
-            
-        #     meanq, logvarq = res_meanq, res_logvarq
-        #     meanp, logvarp = res_meanp, res_logvarp
-        #     hT, gT_ = res_hT, res_gT_
-        #     #meanq, logvarq = torch.cat((res_meanq, trend_meanq), dim=-1), torch.cat((res_logvarq, trend_logvarq), dim=-1)
-        #    # meanp, logvarp = torch.cat((res_meanp, trend_meanp), dim=-1), torch.cat((res_logvarp, trend_logvarp), dim=-1) #[bs, N, d_latent*2]
-
-        #     x = x.permute(0, 2, 1) # x: [bs, seq_len, seq_dim]
+            x = x.permute(0, 2, 1)  # [bs, seq_len, seq_dim]
             
         else:
-            x = x.permute(0, 2, 1)  # x: [bs, seq_dim, seq_len]
+            x = x.permute(0, 2, 1)  # [bs, seq_dim, seq_len]
             
             x, meanq, logvarq, meanp, logvarp = self.model(x)
             
-            x = x.permute(0, 2, 1) #[bs, seq_len, seq_dim]
+            x = x.permute(0, 2, 1)  # [bs, seq_len, seq_dim]
             
-        #return xT_P, xC_P, xT_P_flatten, hT, gT_, x, meanq, logvarq, meanp, logvarp
         return x, meanq, logvarq, meanp, logvarp

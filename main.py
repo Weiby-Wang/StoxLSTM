@@ -1,3 +1,5 @@
+"""Main entry point for StoxLSTM training and evaluation."""
+
 import argparse
 import torch
 import torch.nn as nn
@@ -15,10 +17,10 @@ from Loss_function import MSE_LB_loglikelihood, MAE_LB_loglikelihood
 
 parser = argparse.ArgumentParser(description='Stochastic xLSTM for Time Series Forecasting')
 
-# random seed
+# Random seed
 parser.add_argument('--random_seed', type=int, default=3407, help='random seed')
 
-# data loader
+# Data loader
 parser.add_argument('--data', type=str, required=True, default='Electricity', help='dataset type')
 parser.add_argument('--root_path', type=str, default='./_dat/', help='root path of the data file')
 parser.add_argument('--features', type=str, default='M',
@@ -26,7 +28,7 @@ parser.add_argument('--features', type=str, default='M',
 parser.add_argument('--target', type=str, default='OT', help='target feature in S or MS task')
 parser.add_argument('--scale', type=int, default=1, help='feature scaling; True 1 False 0')
 
-# forecasting task
+# Forecasting task
 parser.add_argument('--look_back_length', type=int, default=96, help='input sequence length')
 parser.add_argument('--label_length', type=int, default=96, help='start token length')
 parser.add_argument('--prediction_length', type=int, default=96, help='prediction sequence length')
@@ -35,19 +37,19 @@ parser.add_argument('--prediction_length', type=int, default=96, help='predictio
 parser.add_argument('--decomposition', type=int, default=0, help='decomposition; True 1 False 0')
 parser.add_argument('--kernel_size', type=int, default=25, help='the size of decomposition-kernel')
 
-# RevIN
+# RevIN (Reversible Instance Normalization)
 parser.add_argument('--revin', type=int, default=1, help='RevIN; True 1 False 0')
 parser.add_argument('--subtract_last', type=int, default=0, help='0: subtract mean; 1: subtract last')
 
-# Patch
+# Patch configuration
 parser.add_argument('--patch_size', type=int, default=56, help='patch size')
 parser.add_argument('--patch_stride', type=int, default=24, help='patch stride')
 
-# StoxLSTM
+# StoxLSTM model architecture
 parser.add_argument('--patch_and_CI', type=int, default=1, help='patching and channel independence; True 1 False 0')
 parser.add_argument('--d_seq', type=int, default=370, help='dimension of sequences')
 parser.add_argument('--d_model', type=int, default=512, help='dimension of model')
-parser.add_argument('--d_latent', type=int, default=128, help='dimension of latent varables')
+parser.add_argument('--d_latent', type=int, default=128, help='dimension of latent variables')
 parser.add_argument('--fc_dropout', type=float, default=0.1, help='fully connected dropout')
 parser.add_argument('--xlstm_h_num_block', type=int, default=2, help='the number of xlstm layers')
 parser.add_argument('--slstm_h_at', action='append', type=int, help='list of slstm position; -1 means no sLSTM block')
@@ -64,19 +66,19 @@ parser.add_argument('--mlp_x_p_hidden_layers_num', type=int, default=2, help='th
 parser.add_argument('--mlp_x_hidden_dim', type=int, default=128, help='hidden dimension of the mlp x')
 parser.add_argument('--mlp_x_hidden_layers_num', type=int, default=2, help='the number of hidden layers in the mlp x')
 
-# Training and Test
+# Training and testing flags
 parser.add_argument('--is_training', type=int, default=1, help='is training phase required? 0 means no training, 1 means training')
 parser.add_argument('--is_test', type=int, default=1, help='is testing phase required? 0 means no testing, 1 means testing')
 parser.add_argument('--plot_result', type=int, default=1, help='plot forecasting results. 0 means no plotting, 1 means plotting')
 
-# optimization
+# Optimization hyperparameters
 parser.add_argument('--train_epoches', type=int, default=2048, help='train epochs')
 parser.add_argument('--batch_size', type=int, default=256, help='batch size of train input data')
 parser.add_argument('--learning_rate', type=float, default=3e-4, help='optimizer learning rate')
 parser.add_argument('--device', type=str, default='cuda', help='use gpu')
 parser.add_argument('--weight_decay', type=float, default=1e-2, help='weight decay of optimizer')
 
-# save figure and model
+# Save figure and model paths
 parser.add_argument('--figure_save_path', type=str, help='path of saving the forecasting figure')
 parser.add_argument('--pre_train_wts_load_path', type=str, help='path of the pre-training model weight')
 parser.add_argument('--wts_save_path', type=str, required=True, help='path of saving model wts')
@@ -86,7 +88,7 @@ args = parser.parse_args()
 print(args)
 
 
-##定义全局变量
+# Define global variables
 prediction_length = args.prediction_length
 look_back_length = args.look_back_length
 
@@ -96,7 +98,7 @@ print('=' * 15)
 print('The computing device is', device)
 
 
-##设置随机数种子
+# Set random seed for reproducibility
 def set_seed(seed):
     np.random.seed(seed)
     random.seed(seed)
@@ -110,17 +112,17 @@ def set_seed(seed):
 set_seed(args.random_seed)
 
 
-##模型声明
+# Initialize model
 print('=' * 15)
 print('Model loading...')
-#监督训练
 mySLNet = Model(configs=args).to(device)
 
 
-##创建数据集
+# Create datasets and data loaders
 print('=' * 15)
 print('Data loading...')
 
+# Mapping from dataset names to file names
 data_map = {
     'Electricity': 'electricity.csv',
     'Weather': 'weather.csv',
@@ -137,6 +139,7 @@ data_map = {
     'ILI': 'national_illness.csv'
 }
 
+# Mapping from dataset names to dataset classes
 dataset_classes = {
     'Electricity': Dataset_General,
     'Weather': Dataset_General,
@@ -156,7 +159,7 @@ dataset_classes = {
 if args.data in dataset_classes:
     dataset_class = dataset_classes[args.data]
 else:
-    raise ValueError(f"UnKnown dataset: {args.data}")
+    raise ValueError(f"Unknown dataset: {args.data}")
 
 batch_size, label_length, root_path  = args.batch_size, args.label_length, args.root_path
 
@@ -172,7 +175,7 @@ val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=5, shuffle=False)
 
 
-##创建训练类
+# Set up training components: loss function, optimizer, and learning rate scheduler
 loss_func = MSE_LB_loglikelihood(length=args.prediction_length).to(device)
 
 optimizer = RAdam(mySLNet.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
