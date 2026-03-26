@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import pandas as pd
-import os
 import torch
 from torch.utils.data import Dataset
 from sklearn.preprocessing import StandardScaler
@@ -11,12 +10,14 @@ warnings.filterwarnings('ignore')
 
 
 class Dataset_General(Dataset):
+    """General-purpose time-series dataset for CSV-formatted data (e.g. Electricity, Weather, Traffic, ILI)."""
+
     def __init__(self, root_path, flag='train', size=None,
                  features='M', data_path='electricity.csv',
                  target='OT', scale=1):
         # size [seq_len, label_len, pred_len]
         # info
-        if size == None:
+        if size is None:
             self.seq_len = 24 * 4 * 4
             self.label_len = 24 * 4 *4
             self.pred_len = 24 * 4
@@ -58,7 +59,7 @@ class Dataset_General(Dataset):
         num_train = int(len(df_raw) * 0.7)
         num_test = int(len(df_raw) * 0.2)
         num_vali = len(df_raw) - num_train - num_test
-        print('num_train: {}, num_vail: {}, num_test: {}', num_train, num_vali, num_test)
+        print(f'num_train: {num_train}, num_val: {num_vali}, num_test: {num_test}')
         
         border1s = [0, num_train - self.seq_len, len(df_raw) - num_test - self.seq_len]
         border2s = [num_train, num_train + num_vali, len(df_raw)]
@@ -101,12 +102,14 @@ class Dataset_General(Dataset):
     
 
 class Dataset_Solar(Dataset):
+    """Dataset for solar energy data stored in a plain-text (tab/comma separated) file."""
+
     def __init__(self, root_path, flag='train', size=None,
                  features='S', data_path='solar.txt',
                  target='OT', scale=True):
         # size [seq_len, label_len, pred_len]
         # info
-        if size == None:
+        if size is None:
             self.seq_len = 24 * 4 * 4
             self.label_len = 24 * 4
             self.pred_len = 24 * 4
@@ -132,7 +135,7 @@ class Dataset_Solar(Dataset):
         df_raw = []
         with open(os.path.join(self.root_path, self.data_path), "r", encoding='utf-8') as f:
             for line in f.readlines():
-                line = line.strip('\n').split(',')  # 去除文本中的换行符
+                line = line.strip('\n').split(',')  # strip newline and split by comma
                 data_line = np.stack([float(i) for i in line])
                 df_raw.append(data_line)
         df_raw = np.stack(df_raw, 0)
@@ -180,12 +183,14 @@ class Dataset_Solar(Dataset):
 
 
 class Dataset_ETT_hour(Dataset):
+    """Dataset for ETT (Electricity Transformer Temperature) hourly data."""
+
     def __init__(self, root_path, flag='train', size=None,
                  features='S', data_path='ETTh1.csv',
                  target='OT', scale=True):
         # size [seq_len, label_len, pred_len]
         # info
-        if size == None:
+        if size is None:
             self.seq_len = 24 * 4 * 4
             self.label_len = 24 * 4
             self.pred_len = 24 * 4
@@ -252,12 +257,14 @@ class Dataset_ETT_hour(Dataset):
     
 
 class Dataset_ETT_minute(Dataset):
+    """Dataset for ETT (Electricity Transformer Temperature) minute-level data."""
+
     def __init__(self, root_path, flag='train', size=None,
                  features='S', data_path='ETTm1.csv',
                  target='OT', scale=True):
         # size [seq_len, label_len, pred_len]
         # info
-        if size == None:
+        if size is None:
             self.seq_len = 24 * 4 * 4
             self.label_len = 24 * 4
             self.pred_len = 24 * 4
@@ -324,12 +331,12 @@ class Dataset_ETT_minute(Dataset):
     
 
 class Dataset_PEMS(Dataset):
+    """Dataset for PEMS traffic sensor data stored in NPZ format."""
+
     def __init__(self, root_path, flag='train', size=None,
                  features='S', data_path='PEMS03.npz',
                  target='OT', scale=True):
-        # size [seq_len, label_len, pred_len]
-        # info
-
+        # size [seq_len, label_len, pred_len]; size is required for PEMS datasets
         self.seq_len = size[0]
         self.label_len = size[1]
         self.pred_len = size[2]
@@ -353,6 +360,7 @@ class Dataset_PEMS(Dataset):
         data = np.load(data_file, allow_pickle=True)
         data = data['data'][:, :, 0]
 
+        # Split into train (60%), validation (20%), test (20%)
         train_ratio = 0.6
         valid_ratio = 0.2
         train_data = data[:int(train_ratio * len(data))]
@@ -365,14 +373,16 @@ class Dataset_PEMS(Dataset):
             self.scaler.fit(data)
             data = self.scaler.transform(data)
 
+        # Fill any missing values using forward-fill then backward-fill
         df = pd.DataFrame(data)
-        df = df.fillna(method='ffill', limit=len(df)).fillna(method='bfill', limit=len(df)).values
+        df = df.ffill(limit=len(df)).bfill(limit=len(df)).values
 
         self.data_x = df.astype(np.float32)
         self.data_y = df.astype(np.float32)
 
     def __getitem__(self, index):
-        if self.set_type == 2:  # test:首尾相连
+        # For test split, use non-overlapping windows (stride=12); train/val use stride=1
+        if self.set_type == 2:
             s_begin = index * 12
         else:
             s_begin = index
@@ -386,7 +396,8 @@ class Dataset_PEMS(Dataset):
         return seq_x, seq_y
 
     def __len__(self):
-        if self.set_type == 2:  # test:首尾相连
+        # For test split, non-overlapping windows divide by stride 12; others use stride=1
+        if self.set_type == 2:
             return (len(self.data_x) - self.seq_len - self.pred_len + 1) // 12
         else:
             return len(self.data_x) - self.seq_len - self.pred_len + 1
